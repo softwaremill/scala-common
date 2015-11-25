@@ -1,5 +1,7 @@
 # scala-common
 
+[![Build Status](https://travis-ci.org/softwaremill/scala-common.svg)](https://travis-ci.org/softwaremill/scala-common)
+
 Tiny independent libraries with a single purpose, often a single class.
 
 ## Tagging
