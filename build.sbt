@@ -4,6 +4,7 @@ import Keys._
 import scalariform.formatter.preferences._
 
 val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
+val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5"
 
 lazy val commonSettings = scalariformSettings ++ Seq(
   organization := "com.softwaremill.common",
@@ -68,3 +69,10 @@ lazy val idGenerator = (project in file("idGenerator"))
     version := "1.0.0",
     name := "id-generator",
     libraryDependencies += scalaLogging)
+
+lazy val futureTry = (project in file("futureTry"))
+  .settings(commonSettings)
+  .settings(
+    version := "1.0.0",
+    name := "futuretry",
+    libraryDependencies += scalaTest)
