@@ -5,7 +5,7 @@ import scala.util.{Success, Failure, Try}
 
 package object futuretry {
 
-  implicit class FutureTry[T](private val baseFuture: Future[T]) extends AnyVal {
+  implicit class FutureTry[T](val baseFuture: Future[T]) extends AnyVal {
 
     /**
       * Reifies the Try output of Futures. Useful mostly for interaction with unusual APIs.
