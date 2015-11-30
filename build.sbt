@@ -58,7 +58,7 @@ lazy val scalaCommon = (project in file("."))
   .settings(
     publishArtifact := false,
     name := "scala-common")
-  .aggregate(tagging, idGenerator)
+  .aggregate(tagging, idGenerator, futureTry)
 
 lazy val tagging = (project in file("tagging"))
   .settings(commonSettings)
