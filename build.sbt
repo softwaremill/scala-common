@@ -3,8 +3,7 @@ import Keys._
 
 import scalariform.formatter.preferences._
 
-val scalaLogging = Seq("com.typesafe.scala-logging" % "scala-logging_2.11" % "3.1.0",
-  "com.typesafe.scala-logging" % "scala-logging-api_2.10" % "2.1.2")
+val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
 val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5"
 
 lazy val commonSettings = scalariformSettings ++ Seq(
@@ -12,7 +11,6 @@ lazy val commonSettings = scalariformSettings ++ Seq(
   version := "1.0.0",
 
   scalaVersion := "2.11.7",
-  crossScalaVersions := Seq("2.10.6", scalaVersion.value),
 
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
@@ -71,7 +69,7 @@ lazy val idGenerator = (project in file("idGenerator"))
   .settings(
     version := "1.0.0",
     name := "id-generator",
-    libraryDependencies ++= scalaLogging)
+    libraryDependencies += scalaLogging)
 
 lazy val futureTry = (project in file("futureTry"))
   .settings(commonSettings)
