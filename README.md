@@ -73,7 +73,7 @@ Provides two utility methods for extending `Future`:
 SBT depedency:
 
 ````scala
-libraryDependencies += "com.softwaremill.common" %% "id-generator" % "1.0.0"
+libraryDependencies += "com.softwaremill.common" %% "futuretry" % "1.0.0"
 ````
 
 Example:
