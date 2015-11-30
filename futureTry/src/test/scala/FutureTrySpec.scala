@@ -1,4 +1,5 @@
 import com.softwaremill.futuretry._
+import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{FlatSpec, MustMatchers}
 
@@ -6,25 +7,27 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Future, Await, Promise}
 import scala.util.{Failure, Success, Try}
 
-class FutureTrySpec extends FlatSpec with MustMatchers with TableDrivenPropertyChecks {
+class FutureTrySpec extends FlatSpec with MustMatchers with TableDrivenPropertyChecks with ScalaFutures {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
   "tried" must "convert a successful result into a Success" in {
     val p = Promise[String]
-
     p.complete(Try("a"))
 
-    Await.result(p.future.tried, Duration.Inf) must be(Success("a"))
+    val transformedFuture = p.future.tried
+
+    transformedFuture.futureValue must be(Success("a"))
   }
 
   it must "convert an exceptional result into a Failure" in {
     val p = Promise[String]
     val exception = new RuntimeException("blah")
-
     p.complete(Try(throw exception))
 
-    Await.result(p.future.tried, Duration.Inf) must be(Failure(exception))
+    val transformedFuture = p.future.tried
+
+    transformedFuture.futureValue must be(Failure(exception))
   }
 
   "transform" must "correctly transform between all Try variants in" in {
@@ -43,14 +46,12 @@ class FutureTrySpec extends FlatSpec with MustMatchers with TableDrivenPropertyC
         {
           val p = Promise[String]
           p.complete(orgValue)
-          p.future.transTry(f) must haveResult(output)
+
+          val transformedFuture = p.future.transTry(f)
+
+          transformedFuture.tried.futureValue must be(output)
         }
     }
-
-  }
-
-  def haveResult[A](value: Try[A]) = {
-    be(value) compose { (f: Future[_]) => Await.result(f.tried, Duration.Inf) }
   }
 
 }
