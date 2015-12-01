@@ -47,7 +47,7 @@ class FutureTrySpec extends FlatSpec with MustMatchers with TableDrivenPropertyC
           val p = Promise[String]
           p.complete(orgValue)
 
-          val transformedFuture = p.future.transTry(f)
+          val transformedFuture = p.future.transformTry(f)
 
           transformedFuture.tried.futureValue must be(output)
         }

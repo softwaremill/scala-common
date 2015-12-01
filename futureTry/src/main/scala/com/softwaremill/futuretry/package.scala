@@ -18,7 +18,7 @@ package object futuretry {
     /**
       * @return a new future with the original's result applied by `f`.
       */
-    def transTry[S](f: Try[T] => Try[S])(implicit executor: ExecutionContext): Future[S] = {
+    def transformTry[S](f: Try[T] => Try[S])(implicit executor: ExecutionContext): Future[S] = {
       val p = Promise[S]
       baseFuture.onComplete(f.andThen(p.complete))
       p.future
