@@ -59,3 +59,35 @@ SBT depedency:
 ````scala
 libraryDependencies += "com.softwaremill.common" %% "id-generator" % "1.0.0"
 ````
+
+## Future Try extensions
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.11)
+
+Provides two utility methods for extending `Future`:
+
+ - `tried: Future[Try[T]]` - reifying the Future's result.
+ - `transformTry(f: Try[T] => Try[S]): Future[S]` - corresponds to 2.12's new `transform` variant, allowing to supply a single function (if, for example, you already have one handy), 
+ instead of two. _Note: unfortunately, it was not possible to name this method transform, due to how scalac handles implicit resolution._
+
+SBT depedency:
+
+````scala
+libraryDependencies += "com.softwaremill.common" %% "futuretry" % "1.0.0"
+````
+
+Example:
+
+````scala
+
+val myFuture: Future[Foo] = ...
+val myUsefulTransformer: Try[Foo] => Try[Bar] = ...
+
+def someWeirdApiMethod(future: Future[Try[Foo]])
+ 
+import com.softwaremill.futuretry._
+
+someWeirdApiMethod(myFuture.tried)
+
+val myBetterFuture: Future[Bar] = myFuture.transformTry(myUsefulTransformer)
+````
