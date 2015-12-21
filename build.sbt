@@ -69,7 +69,7 @@ lazy val idGenerator = (project in file("idGenerator"))
   .settings(
     version := "1.0.0",
     name := "id-generator",
-    libraryDependencies += scalaLogging)
+    libraryDependencies ++= Seq(scalaLogging, scalaTest))
 
 lazy val futureTry = (project in file("futureTry"))
   .settings(commonSettings)

@@ -7,6 +7,7 @@ import com.typesafe.scalalogging.StrictLogging
   */
 trait IdGenerator {
   def nextId(): Long
+  def idFrom(timestamp: Long): Long
 }
 
 /**
@@ -20,6 +21,12 @@ class DefaultIdGenerator(workerId: Long = 1, datacenterId: Long = 1) extends IdG
   def nextId(): Long = {
     synchronized {
       idWorker.nextId()
+    }
+  }
+
+  def idFrom(timestamp: Long): Long = {
+    synchronized {
+      idWorker.idForTimestamp(timestamp)
     }
   }
 }
@@ -70,7 +77,6 @@ private[id] class IdWorker(workerId: Long, datacenterId: Long, var sequence: Lon
 
   def nextId(): Long = {
     var timestamp = timeGen()
-
     if (lastTimestamp == timestamp) {
       sequence = (sequence + 1) & sequenceMask
       if (sequence == 0) {
@@ -92,6 +98,8 @@ private[id] class IdWorker(workerId: Long, datacenterId: Long, var sequence: Lon
       (workerId << workerIdShift) |
       sequence
   }
+
+  def idForTimestamp(timestamp: Long): Long = (timestamp - twepoch) << timestampLeftShift
 
   protected def tilNextMillis(lastTimestamp: Long): Long = {
     var timestamp = timeGen()
