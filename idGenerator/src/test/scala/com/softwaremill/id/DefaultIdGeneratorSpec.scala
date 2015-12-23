@@ -6,15 +6,15 @@ class DefaultIdGeneratorSpec extends WordSpec with MustMatchers {
   val datacenterMask = 0x00000000003E0000L
   val timestampMask = 0xFFFFFFFFFFC00000L
 
-  class EasyTimeWorker(workerId: Long, datacenterId: Long) extends IdWorker(workerId, datacenterId) {
-    var timeMaker = () => System.currentTimeMillis
+  class EasyTimeWorker(workerId: Long, datacenterId: Long, timeStart: Long = System.currentTimeMillis()) extends IdWorker(workerId, datacenterId) {
+    var timeMaker = () => timeStart
     override def timeGen(): Long = {
       timeMaker()
     }
   }
 
   class WakingIdWorker(workerId: Long, datacenterId: Long)
-      extends EasyTimeWorker(workerId, datacenterId) {
+    extends EasyTimeWorker(workerId, datacenterId) {
     var slept = 0
     override def tilNextMillis(lastTimestamp: Long): Long = {
       slept += 1
@@ -142,6 +142,52 @@ class DefaultIdGeneratorSpec extends WordSpec with MustMatchers {
     "generate ids over 50 billion" in {
       val worker = new IdWorker(0, 0)
       worker.nextId must be > 50000000000L
+    }
+
+    "generate ids older then lower bound" in {
+      //given
+      val worker = new IdWorker(0, 0)
+      val lowerBound = worker.idForTimestamp(System.currentTimeMillis())
+
+      //when
+      val ids = List(worker.nextId, worker.nextId, worker.nextId)
+
+      //then
+      ids.foreach(_ >= lowerBound must be(true))
+    }
+
+    "generate older lowerBound then next generated ids from distinct workers" in {
+      //given
+      val worker = new IdWorker(0, 0)
+      val lowerBound = worker.idForTimestamp(System.currentTimeMillis())
+
+      //when
+      val ids = List(new DefaultIdGenerator(workerId = 1).nextId,
+        new DefaultIdGenerator(workerId = 2).nextId,
+        new DefaultIdGenerator(workerId = 3).nextId)
+
+      //then
+      ids.foreach(_ >= lowerBound must be(true))
+    }
+
+    "generate range of ids that catches only 3 oldest ids" in {
+      //given
+      val currentPoint = System.currentTimeMillis()
+      val upperBoundOverheadAndExtraTime = 300000 // (datacenterId << datacenterIdShift) | (workerId << workerIdShift)
+
+      val gen = new EasyTimeWorker(0,1, timeStart = currentPoint)
+      val lowerBound = gen.idForTimestamp(currentPoint)
+      val upperBound = lowerBound + upperBoundOverheadAndExtraTime
+
+      val ids = List(gen.nextId, gen.nextId, gen.nextId)
+
+      //when
+      val laterMilis = 120
+      val olderIds = new EasyTimeWorker(1,2, timeStart = currentPoint + laterMilis)
+      val newList = ids ++ List(olderIds.nextId, olderIds.nextId, olderIds.nextId)
+
+      //then
+      newList.count(id => id >= lowerBound && id < upperBound) must be (3)
     }
   }
 }

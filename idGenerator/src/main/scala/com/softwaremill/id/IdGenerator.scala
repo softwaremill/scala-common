@@ -7,7 +7,7 @@ import com.typesafe.scalalogging.StrictLogging
   */
 trait IdGenerator {
   def nextId(): Long
-  def idFrom(timestamp: Long): Long
+  def idBaseAt(timestamp: Long): Long
 }
 
 /**
@@ -24,10 +24,8 @@ class DefaultIdGenerator(workerId: Long = 1, datacenterId: Long = 1) extends IdG
     }
   }
 
-  def idFrom(timestamp: Long): Long = {
-    synchronized {
+  def idBaseAt(timestamp: Long): Long = {
       idWorker.idForTimestamp(timestamp)
-    }
   }
 }
 
