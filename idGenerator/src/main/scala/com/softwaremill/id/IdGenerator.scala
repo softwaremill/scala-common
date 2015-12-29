@@ -30,7 +30,7 @@ class DefaultIdGenerator(workerId: Long = 1, datacenterId: Long = 1) extends IdG
   }
 
   def idBaseAt(timestamp: Long): Long = {
-      idWorker.idForTimestamp(timestamp)
+    idWorker.idForTimestamp(timestamp)
   }
 }
 
