@@ -7,6 +7,11 @@ import com.typesafe.scalalogging.StrictLogging
   */
 trait IdGenerator {
   def nextId(): Long
+
+  /**
+    * An id base at the given timestamp. Should be smaller than all ids generated at that time, and bigger than
+    * all ids generated before that time.
+    */
   def idBaseAt(timestamp: Long): Long
 }
 

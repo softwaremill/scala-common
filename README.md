@@ -57,7 +57,7 @@ which generates time-based ids.
 SBT depedency:
 
 ````scala
-libraryDependencies += "com.softwaremill.common" %% "id-generator" % "1.0.0"
+libraryDependencies += "com.softwaremill.common" %% "id-generator" % "1.1.0"
 ````
 
 ## Future Try extensions
