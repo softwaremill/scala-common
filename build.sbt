@@ -56,7 +56,7 @@ lazy val scalaCommon = (project in file("."))
   .settings(
     publishArtifact := false,
     name := "scala-common")
-  .aggregate(tagging, idGenerator, futureTry)
+  .aggregate(tagging, idGenerator, futureTry, benchmark)
 
 lazy val tagging = (project in file("tagging"))
   .settings(commonSettings)
@@ -76,4 +76,11 @@ lazy val futureTry = (project in file("futureTry"))
   .settings(
     version := "1.0.0",
     name := "futuretry",
+    libraryDependencies += scalaTest)
+
+lazy val benchmark = (project in file("benchmark"))
+  .settings(commonSettings)
+  .settings(
+    version := "1.0.0",
+    name := "benchmark",
     libraryDependencies += scalaTest)
