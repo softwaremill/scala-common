@@ -91,3 +91,60 @@ someWeirdApiMethod(myFuture.tried)
 
 val myBetterFuture: Future[Bar] = myFuture.transformTry(myUsefulTransformer)
 ````
+
+## Simple benchmarking utilities
+
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/benchmarks_2.11)
+
+Provides utilities for benchmarking.
+
+ - `Timed.runTests(tests: List[(String, () => String)], repetitions: Int)`: runs specified number of repetitions of
+  given code blocks and collects results (*mean* and *standard deviation*). A warmup round of all tests will be executed
+  before measuring any statistics. Tests will be executed in random order.
+ 
+ - `Timed.runTests(tests, repetitions, warmup)` runs multiple repetitions of shuffled tests provided as a list of `PerfTest` 
+ instances. Each `PerfTest` should define a name, body (synchronous code block) and, optionally, an additional code block 
+ that specifies a "warmup" that will be run before each test execution. The `Timed` object can also consume an optional 
+ `warmup` argument which specified code block that should be executed before all tests. If omitted, the default global warmup 
+ will run all the provided tests once (without collecting metrics).
+   
+Example:
+
+````scala
+
+val simpleTests: List[(String, () => String)] = List(
+  ("test1", () => {
+    // do some calculation
+    "Ok"
+  }),
+  ("test2", () => {
+    // do some other calculation
+    "Ok"
+  })
+)
+
+Timed.runTests(simpleTests, repetitions = 50)
+````
+or
+````scala
+
+case class MyTest(name: String, param: Int) extends PerfTest {
+
+  override def warmup(): Unit = {
+    // prepare some resources
+  }
+
+  override def run(): Try[String] = {
+    // do some calculations
+    Success(String)
+  }
+}
+  
+val tests: List[MyTest] = List(
+  MyTest("test1", param = 665), MyTest("test2", param = 777)    
+)
+  
+Timed.runTests(tests, repetitions = 50, warmup = (tests: List[MyTest]) => {
+  // global warmup body
+})
+````
