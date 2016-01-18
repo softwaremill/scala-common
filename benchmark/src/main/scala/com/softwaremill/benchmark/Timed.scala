@@ -3,31 +3,46 @@ package com.softwaremill.benchmark
 import scala.util.Random
 
 object Timed {
+
   def timed[T](b: => T): (T, Long) = {
     val start = System.currentTimeMillis()
     val r = b
     (r, System.currentTimeMillis() - start)
   }
 
-  def runTests(tests: List[(String, () => String)], repetitions: Int): Unit = {
-    val allTests = Random.shuffle(List.fill(repetitions)(tests).flatten)
-
+  private def defaultWarmup(tests: List[PerfTest]): Unit = {
     println("Warmup")
-    for ((name, body) <- tests) {
-      val (result, time) = timed { body() }
-      println(f"$name%-25s $result%-25s ${time / 1000.0d}%4.2fs")
+    for (test <- tests) {
+      val (result, time) = timed { test.run() }
+      println(f"${test.name}%-25s $result%-25s ${time / 1000.0d}%4.2fs")
     }
 
     println("---")
+  }
+
+  def runTests[T <: PerfTest](
+                               tests: List[T],
+                               repetitions: Int,
+                               warmup: List[T] => Unit = defaultWarmup _
+                             ): Unit = {
+    val allTests = Random.shuffle(List.fill(repetitions)(tests).flatten)
+    warmup(tests)
     println(s"Running ${allTests.size} tests")
 
-    val rawResults = for ((name, body) <- allTests) yield {
-      val (result, time) = timed { body() }
-      println(f"$name%-25s $result%-25s ${time / 1000.0d}%4.2fs")
-      name -> time
+    val rawResults = for (test <- allTests) yield {
+      test.warmup()
+      val name = test.name
+      val (result, time) = timed {
+        test.run()
+      }
+      result.foreach {
+        rStr => println(f"$name%-25s $rStr%-25s ${time / 1000.0d}%4.2fs")
+      }
+      result.map(r => name -> time)
     }
+    val successfulRawResults = rawResults.filter(_.isSuccess).map(_.get)
 
-    val results: Map[String, (Double, Double)] = rawResults.groupBy(_._1)
+    val results: Map[String, (Double, Double)] = successfulRawResults.groupBy(_._1)
       .mapValues(_.map(_._2))
       .mapValues { times =>
         val count = times.size
