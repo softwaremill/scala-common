@@ -1,6 +1,6 @@
 package com.softwaremill.benchmark
 
-import scala.util.Random
+import scala.util.{Success, Try, Random}
 
 object Timed {
 
@@ -18,6 +18,19 @@ object Timed {
     }
 
     println("---")
+  }
+
+  def runTests(
+              tests: List[(String, () => String)],
+              repetitions: Int
+              ): Unit = {
+    val testInstances = tests.map { case (nameStr, block) => new PerfTest {
+      override def name: String = nameStr
+
+      override def run(): Try[String] = Success(block())
+    }
+    }
+    runTests(testInstances, repetitions)
   }
 
   def runTests[T <: PerfTest](
@@ -59,4 +72,5 @@ object Timed {
         println(f"$name%-25s ${mean / 1000.0d}%4.2fs $stddev%4.2fms")
     }
   }
+
 }
