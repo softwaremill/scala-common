@@ -14,7 +14,7 @@ class DefaultIdGeneratorSpec extends WordSpec with MustMatchers {
   }
 
   class WakingIdWorker(workerId: Long, datacenterId: Long)
-    extends EasyTimeWorker(workerId, datacenterId) {
+      extends EasyTimeWorker(workerId, datacenterId) {
     var slept = 0
     override def tilNextMillis(lastTimestamp: Long): Long = {
       slept += 1
@@ -162,9 +162,11 @@ class DefaultIdGeneratorSpec extends WordSpec with MustMatchers {
       val lowerBound = worker.idForTimestamp(System.currentTimeMillis())
 
       //when
-      val ids = List(new DefaultIdGenerator(workerId = 1).nextId,
+      val ids = List(
+        new DefaultIdGenerator(workerId = 1).nextId,
         new DefaultIdGenerator(workerId = 2).nextId,
-        new DefaultIdGenerator(workerId = 3).nextId)
+        new DefaultIdGenerator(workerId = 3).nextId
+      )
 
       //then
       ids.foreach(_ >= lowerBound must be(true))
@@ -175,7 +177,7 @@ class DefaultIdGeneratorSpec extends WordSpec with MustMatchers {
       val currentPoint = System.currentTimeMillis()
       val upperBoundOverheadAndExtraTime = 300000 // (datacenterId << datacenterIdShift) | (workerId << workerIdShift)
 
-      val gen = new EasyTimeWorker(0,1, timeStart = currentPoint)
+      val gen = new EasyTimeWorker(0, 1, timeStart = currentPoint)
       val lowerBound = gen.idForTimestamp(currentPoint)
       val upperBound = lowerBound + upperBoundOverheadAndExtraTime
 
@@ -183,7 +185,7 @@ class DefaultIdGeneratorSpec extends WordSpec with MustMatchers {
 
       //when
       val laterMilis = 120
-      val olderIds = new EasyTimeWorker(1,2, timeStart = currentPoint + laterMilis)
+      val olderIds = new EasyTimeWorker(1, 2, timeStart = currentPoint + laterMilis)
       val newList = ids ++ List(olderIds.nextId, olderIds.nextId, olderIds.nextId)
 
       //then

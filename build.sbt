@@ -3,14 +3,15 @@ import Keys._
 
 import scalariform.formatter.preferences._
 
-val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0"
-val scalaTest = "org.scalatest" %% "scalatest" % "2.2.5"
+val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
+val scalaTest = "org.scalatest" %% "scalatest" % "3.0.0"
 
 lazy val commonSettings = scalariformSettings ++ Seq(
   organization := "com.softwaremill.common",
   version := "1.0.0",
 
-  scalaVersion := "2.11.7",
+  scalaVersion := "2.11.8",
+  crossScalaVersions := Seq("2.12.0"),
 
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
