@@ -47,6 +47,48 @@ Original idea by [Miles Sabin](https://gist.github.com/milessabin/89c9b47a910179
 Similar implementations are also available in [Shapeless](https://github.com/milessabin/shapeless) 
 and [Scalaz](https://github.com/scalaz/scalaz).
 
+####Tagging and typeclasses
+Let's consider the following example:
+
+```scala
+import com.softwaremill.tagging._
+
+// Our typeclass
+trait Serializer[T] {
+  def doSerialize(t: T): String
+}
+
+// Method that leverages typeclass, to transform some T into a String
+def serialize[T](t: T)(implicit ser: Serializer[T]): String = {
+  ser.doSerialize(t)
+}
+
+// Typeclass instance for type `Long`
+implicit val longSerializer = new Serializer[Long] {
+  override def doSerialize(t: Long): String = "Long number: " + t
+}
+
+val longNumber = 30L
+serialize(longNumber) // Compiles and returns "Long number: 30"
+
+// Our marker trait to be used as a tag
+trait UserId
+
+val id: Long @@ Id = 1024L.taggedWith[UserId]
+serialize(id) // Won't compile: could not find implicit value for parameter ser
+```
+Because tagged type `T @@ U` is considered by the compiler as a different type than `T`, it will complain about missing implicit typeclass `Serializer[_]` for `T @@ U`, even if there is instance of `Serializer[T]` already in scope.
+
+To solve this problem just either mix-in `TypeclassTaggingCompat[M[_]]`/`AnyTypeclassTaggingCompat` trait or import contents of the `AnyTypeclassTaggingCompat` object:
+```scala
+import com.softwaremill.tagging.AnyTypeclassTaggingCompat._
+
+serialize(id) // Compiles and returns "Long number: 1024"
+``` 
+
+`TypeclassTaggingCompat` brings implicit conversion, that can adapt any implicit `M[T]` to be used as `M[T @@ U]`.
+
+
 ## Id generator
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/id-generator_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/id-generator_2.11)
