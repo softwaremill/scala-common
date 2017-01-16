@@ -11,7 +11,7 @@ lazy val commonSettings = scalariformSettings ++ Seq(
   version := "1.0.0",
 
   scalaVersion := "2.11.8",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.0"),
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.1"),
 
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
@@ -38,8 +38,8 @@ lazy val commonSettings = scalariformSettings ++ Seq(
   pomIncludeRepository := { _ => false },
   pomExtra :=
     <scm>
-      <url>git@github.com:adamw/macwire.git</url>
-      <connection>scm:git:git@github.com:adamw/macwire.git</connection>
+      <url>git@github.com:softwaremill/scala-common.git</url>
+      <connection>scm:git:git@github.com:softwaremill/scala-common.git</connection>
     </scm>
       <developers>
         <developer>
@@ -62,7 +62,7 @@ lazy val scalaCommon = (project in file("."))
 lazy val tagging = (project in file("tagging"))
   .settings(commonSettings)
   .settings(
-    version := "2.0.0",
+    version := "2.1.0",
     name := "tagging")
 
 lazy val idGenerator = (project in file("idGenerator"))
