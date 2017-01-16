@@ -79,14 +79,14 @@ serialize(id) // Won't compile: could not find implicit value for parameter ser
 ```
 Because tagged type `T @@ U` is considered by the compiler as a different type than `T`, it will complain about missing implicit typeclass `Serializer[_]` for `T @@ U`, even if there is instance of `Serializer[T]` already in scope.
 
-To solve this problem just either mix-in `TaggingCompat` trait or import contents of its companion object:
+To solve this problem just either mix-in `TypeclassTaggingCompat[M[_]]`/`AnyTypeclassTaggingCompat` trait or import contents of the `AnyTypeclassTaggingCompat` object:
 ```scala
-import com.softwaremill.tagging.TaggingCompat._
+import com.softwaremill.tagging.AnyTypeclassTaggingCompat._
 
 serialize(id) // Compiles and returns "Long number: 1024"
 ``` 
 
-`TaggingCompat` brings implicit conversion, that can adapt any implicit `M[T]` to be used as `M[T @@ U]`.
+`TypeclassTaggingCompat` brings implicit conversion, that can adapt any implicit `M[T]` to be used as `M[T @@ U]`.
 
 
 ## Id generator
