@@ -25,10 +25,10 @@ package object tagging {
   type Tag[+U] = { type Tag <: U }
   type @@[+T, +U] = T with Tag[U]
   type Tagged[+T, +U] = T with Tag[U]
-  implicit class Tagger[T](t: T) {
+  implicit class Tagger[T](val t: T) extends AnyVal {
     def taggedWith[U]: T @@ U = t.asInstanceOf[T @@ U]
   }
-  implicit class AndTagger[T, U](t: T @@ U) {
+  implicit class AndTagger[T, U](val t: T @@ U) extends AnyVal {
     def andTaggedWith[V]: T @@ (U with V) = t.asInstanceOf[T @@ (U with V)]
   }
 }
