@@ -62,7 +62,7 @@ lazy val scalaCommon = (project in file("."))
 lazy val tagging = (project in file("tagging"))
   .settings(commonSettings)
   .settings(
-    version := "2.1.0",
+    version := "2.2.0",
     name := "tagging")
 
 lazy val idGenerator = (project in file("idGenerator"))
