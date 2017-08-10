@@ -23,7 +23,7 @@ To add tags to existing instances, you can use the `taggedWith[_]` method, which
 SBT dependency:
 
 ````scala
-libraryDependencies += "com.softwaremill.common" %% "tagging" % "2.1.0"
+libraryDependencies += "com.softwaremill.common" %% "tagging" % "2.2.0"
 ````
 
 Example:
