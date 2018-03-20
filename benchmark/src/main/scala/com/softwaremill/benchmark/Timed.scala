@@ -1,12 +1,12 @@
 package com.softwaremill.benchmark
 
-import scala.util.{Success, Try, Random}
+import scala.util.{Random, Success, Try}
 
 object Timed {
 
   def timed[T](b: => T): (T, Long) = {
     val start = System.currentTimeMillis()
-    val r = b
+    val r     = b
     (r, System.currentTimeMillis() - start)
   }
 
@@ -21,23 +21,25 @@ object Timed {
   }
 
   def runTests(
-              tests: List[(String, () => String)],
-              repetitions: Int
-              ): Unit = {
-    val testInstances = tests.map { case (nameStr, block) => new PerfTest {
-      override def name: String = nameStr
+      tests: List[(String, () => String)],
+      repetitions: Int
+  ): Unit = {
+    val testInstances = tests.map {
+      case (nameStr, block) =>
+        new PerfTest {
+          override def name: String = nameStr
 
-      override def run(): Try[String] = Success(block())
-    }
+          override def run(): Try[String] = Success(block())
+        }
     }
     runTests(testInstances, repetitions)
   }
 
   def runTests[T <: PerfTest](
-                               tests: List[T],
-                               repetitions: Int,
-                               warmup: List[T] => Unit = defaultWarmup _
-                             ): Unit = {
+      tests: List[T],
+      repetitions: Int,
+      warmup: List[T] => Unit = defaultWarmup _
+  ): Unit = {
     val allTests = Random.shuffle(List.fill(repetitions)(tests).flatten)
     warmup(tests)
     println(s"Running ${allTests.size} tests")
@@ -48,19 +50,20 @@ object Timed {
       val (result, time) = timed {
         test.run()
       }
-      result.foreach {
-        rStr => println(f"$name%-25s $rStr%-25s ${time / 1000.0d}%4.2fs")
+      result.foreach { rStr =>
+        println(f"$name%-25s $rStr%-25s ${time / 1000.0d}%4.2fs")
       }
       result.map(r => name -> time)
     }
     val successfulRawResults = rawResults.filter(_.isSuccess).map(_.get)
 
-    val results: Map[String, (Double, Double)] = successfulRawResults.groupBy(_._1)
+    val results: Map[String, (Double, Double)] = successfulRawResults
+      .groupBy(_._1)
       .mapValues(_.map(_._2))
       .mapValues { times =>
-        val count = times.size
-        val mean = times.sum.toDouble / count
-        val dev = times.map(t => (t - mean) * (t - mean))
+        val count  = times.size
+        val mean   = times.sum.toDouble / count
+        val dev    = times.map(t => (t - mean) * (t - mean))
         val stddev = Math.sqrt(dev.sum / count)
         (mean, stddev)
       }

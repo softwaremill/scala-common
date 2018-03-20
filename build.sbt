@@ -1,12 +1,10 @@
 import sbt._
 import Keys._
 
-import scalariform.formatter.preferences._
-
 val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.0"
 
-lazy val commonSettings = scalariformSettings ++ Seq(
+lazy val commonSettings = Seq(
   organization := "com.softwaremill.common",
   version := "1.0.0",
 
@@ -16,13 +14,6 @@ lazy val commonSettings = scalariformSettings ++ Seq(
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
   parallelExecution := false,
-
-  ScalariformKeys.preferences := ScalariformKeys.preferences.value
-    .setPreference(DoubleIndentClassDeclaration, true)
-    .setPreference(PreserveSpaceBeforeArguments, true)
-    .setPreference(CompactControlReadability, true)
-    .setPreference(PlaceScaladocAsterisksBeneathSecondAsterisk, true)
-    .setPreference(SpacesAroundMultiImports, false),
 
   // Sonatype OSS deployment
   publishTo := Some(

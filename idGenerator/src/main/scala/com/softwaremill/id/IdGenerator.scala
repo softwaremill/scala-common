@@ -48,16 +48,16 @@ class DefaultIdGenerator(workerId: Long = 1, datacenterId: Long = 1) extends IdG
 private[id] class IdWorker(workerId: Long, datacenterId: Long, var sequence: Long = 0L) extends StrictLogging {
   val twepoch = 1288834974657L
 
-  private val workerIdBits = 5L
+  private val workerIdBits     = 5L
   private val datacenterIdBits = 5L
-  private val maxWorkerId = -1L ^ (-1L << workerIdBits)
-  private val maxDatacenterId = -1L ^ (-1L << datacenterIdBits)
-  private val sequenceBits = 12L
+  private val maxWorkerId      = -1L ^ (-1L << workerIdBits)
+  private val maxDatacenterId  = -1L ^ (-1L << datacenterIdBits)
+  private val sequenceBits     = 12L
 
-  private val workerIdShift = sequenceBits
-  private val datacenterIdShift = sequenceBits + workerIdBits
+  private val workerIdShift      = sequenceBits
+  private val datacenterIdShift  = sequenceBits + workerIdBits
   private val timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits
-  private val sequenceMask = -1L ^ (-1L << sequenceBits)
+  private val sequenceMask       = -1L ^ (-1L << sequenceBits)
 
   private var lastTimestamp = -1L
 
@@ -70,13 +70,19 @@ private[id] class IdWorker(workerId: Long, datacenterId: Long, var sequence: Lon
     throw new IllegalArgumentException("datacenter Id can't be greater than %d or less than 0".format(maxDatacenterId))
   }
 
-  logger.info("Id worker starting. Timestamp left shift %d, datacenter id bits %d, worker id bits %d, sequence bits %d, workerid %d".format(
-    timestampLeftShift, datacenterIdBits, workerIdBits, sequenceBits, workerId
-  ))
+  logger.info(
+    "Id worker starting. Timestamp left shift %d, datacenter id bits %d, worker id bits %d, sequence bits %d, workerid %d".format(
+      timestampLeftShift,
+      datacenterIdBits,
+      workerIdBits,
+      sequenceBits,
+      workerId
+    )
+  )
 
-  def get_worker_id(): Long = workerId
+  def get_worker_id(): Long     = workerId
   def get_datacenter_id(): Long = datacenterId
-  def get_timestamp() = System.currentTimeMillis
+  def get_timestamp()           = System.currentTimeMillis
 
   def nextId(): Long = {
     var timestamp = timeGen()
@@ -85,14 +91,15 @@ private[id] class IdWorker(workerId: Long, datacenterId: Long, var sequence: Lon
       if (sequence == 0) {
         timestamp = tilNextMillis(lastTimestamp)
       }
-    }
-    else {
+    } else {
       sequence = 0
     }
 
     if (timestamp < lastTimestamp) {
       logger.error("Clock is moving backwards. Rejecting requests until %d.".format(lastTimestamp))
-      throw new RuntimeException("Invalid system clock: Clock moved backwards. Refusing to generate id for %d milliseconds".format(lastTimestamp - timestamp))
+      throw new RuntimeException(
+        "Invalid system clock: Clock moved backwards. Refusing to generate id for %d milliseconds".format(lastTimestamp - timestamp)
+      )
     }
 
     lastTimestamp = timestamp

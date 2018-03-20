@@ -1,7 +1,7 @@
 package com.softwaremill
 
-import scala.concurrent.{Promise, ExecutionContext, Future}
-import scala.util.{Success, Failure, Try}
+import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.util.{Failure, Success, Try}
 
 package object futuretry {
 
