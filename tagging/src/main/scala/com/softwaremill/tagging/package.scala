@@ -22,7 +22,7 @@ package com.softwaremill
   * Original idea by Miles Sabin, see: https://gist.github.com/milessabin/89c9b47a91017973a35f
   */
 package object tagging {
-  type Tag[+U] = { type Tag <: U }
+  trait Tag[+U] extends Any { type Tag <: U }
   type @@[+T, +U] = T with Tag[U]
   type Tagged[+T, +U] = T with Tag[U]
   implicit class Tagger[T](val t: T) extends AnyVal {
