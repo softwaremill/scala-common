@@ -25,13 +25,12 @@ lazy val commonSettings = scalariformSettings ++ Seq(
     .setPreference(SpacesAroundMultiImports, false),
 
   // Sonatype OSS deployment
-  publishTo <<= version { (v: String) =>
-    val nexus = "https://oss.sonatype.org/"
-    if (v.trim.endsWith("SNAPSHOT"))
-      Some("snapshots" at nexus + "content/repositories/snapshots")
+  publishTo := Some(
+    if (isSnapshot.value)
+      Opts.resolver.sonatypeSnapshots
     else
-      Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-  },
+      Opts.resolver.sonatypeStaging
+  ),
   credentials   += Credentials(Path.userHome / ".ivy2" / ".credentials"),
   publishMavenStyle := true,
   publishArtifact in Test := false,
