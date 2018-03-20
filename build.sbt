@@ -11,7 +11,7 @@ lazy val commonSettings = scalariformSettings ++ Seq(
   version := "1.0.0",
 
   scalaVersion := "2.11.8",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.1"),
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.4"),
 
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
@@ -61,7 +61,7 @@ lazy val scalaCommon = (project in file("."))
 lazy val tagging = (project in file("tagging"))
   .settings(commonSettings)
   .settings(
-    version := "2.2.0",
+    version := "2.2.1",
     name := "tagging")
 
 lazy val idGenerator = (project in file("idGenerator"))
