@@ -39,6 +39,7 @@ class AlphabetCodec(alphabet: Alphabet) extends Codec {
 }
 
 class Alphabet(private val values: String) {
+  require(values.toSet.size == values.length)
   def base: Int = values.length
 
   def valueOf(i: Int): Char = values.charAt(i)

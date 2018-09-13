@@ -31,7 +31,7 @@ class IdPrettifier(
 
   def isValid(id: String): Boolean = Damm.isValid(decodeSeedWithCheckDigit(id))
 
-  def toIdSeed(id: String): Either[Long, ConversionError] = convertToLong(id)
+  def toIdSeed(id: String): Either[ConversionError, Long] = convertToLong(id)
 
   private def divide(s: String): Seq[String] =
     s.reverse.grouped(partsSize).toSeq.reverse.map(_.reverse)
@@ -43,16 +43,17 @@ class IdPrettifier(
 
   case class ConversionError(invalidId: String)
 
-  private def convertToLong(s: String): Either[Long, ConversionError] = {
+  private def convertToLong(s: String): Either[ConversionError, Long] = {
     val decodedWithCheckDigit: String = decodeSeedWithCheckDigit(s)
     if (Damm.isValid(decodedWithCheckDigit)) {
       try {
-        Left(decodedWithCheckDigit.dropRight(1).toLong)
+        Right(decodedWithCheckDigit.dropRight(1).toLong)
       } catch {
-        case e: NumberFormatException => Right(ConversionError(s))
+        case e: NumberFormatException =>
+          Left(ConversionError(s))
       }
     } else {
-      Right(ConversionError(s))
+      Left(ConversionError(s))
     }
   }
 
@@ -89,7 +90,7 @@ class IdPrettifier(
         if (isEven) {
           Seq(part) ++ result
         } else {
-          val decoded = encoder.decode(part)
+          val decoded = addLeadingZeros(encoder.decode(part).toString, '0', partsSize)
           Seq(decoded.toString) ++ result
         }
       }
@@ -102,6 +103,8 @@ class DefaultPrettyIdGenerator(idGenerator: IdGenerator) extends StringIdGenerat
 
   val idPrettifier =  new IdPrettifier()
 
-  def nextId:String = idPrettifier.prettify(idGenerator.nextId())
+  def nextId():String = idPrettifier.prettify(idGenerator.nextId())
+
+  def idBaseAt(timestamp: Long): String =  idPrettifier.prettify(idGenerator.idBaseAt(timestamp))
 }
 

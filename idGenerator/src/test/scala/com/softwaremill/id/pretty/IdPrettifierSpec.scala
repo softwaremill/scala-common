@@ -1,5 +1,6 @@
 package com.softwaremill.id.pretty
 
+import com.fasterxml.uuid.{EthernetAddress, Generators}
 import com.softwaremill.id.DefaultIdGenerator
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -45,9 +46,9 @@ class IdPrettifierSpec extends FlatSpec with Matchers {
     val maxPrettyId           = prettifiedWithLeading.prettify(max)
     val examplePrettyId       = prettifiedWithLeading.prettify(exampleId)
 
-    prettifiedWithLeading.toIdSeed("HPJD-72036-HAPK-58077") should be(Left(max))
-    prettifiedWithLeading.toIdSeed("ARPJ-27036-GVQS-07849") should be(Left(exampleId))
-    prettifiedWithLeading.toIdSeed("AAAA-00000-AAAA-00013") should be(Left(1L))
+    prettifiedWithLeading.toIdSeed("HPJD-72036-HAPK-58077") should be(Right(max))
+    prettifiedWithLeading.toIdSeed("ARPJ-27036-GVQS-07849") should be(Right(exampleId))
+    prettifiedWithLeading.toIdSeed("AAAA-00000-AAAA-00013") should be(Right(1L))
   }
 
   it should "find seed of pretty ID without leading zeros" in {
@@ -55,9 +56,9 @@ class IdPrettifierSpec extends FlatSpec with Matchers {
     val maxPrettyId                    = prettifiedWithoutTrailingZeros.prettify(max)
     val examplePrettyId                = prettifiedWithoutTrailingZeros.prettify(exampleId)
 
-    prettifiedWithoutTrailingZeros.toIdSeed("HPJD-72036-HAPK-58077") should be(Left(max))
-    prettifiedWithoutTrailingZeros.toIdSeed("RPJ-27036-GVQS-07849") should be(Left(exampleId))
-    prettifiedWithoutTrailingZeros.toIdSeed("13") should be(Left(1L))
+    prettifiedWithoutTrailingZeros.toIdSeed("HPJD-72036-HAPK-58077") should be(Right(max))
+    prettifiedWithoutTrailingZeros.toIdSeed("RPJ-27036-GVQS-07849") should be(Right(exampleId))
+    prettifiedWithoutTrailingZeros.toIdSeed("13") should be(Right(1L))
   }
 
   it should "validate pretty IDs" in {
@@ -73,17 +74,71 @@ class IdPrettifierSpec extends FlatSpec with Matchers {
   it should "preserve ID monotonicity" in {
     import prettifier._
     val idGenerator = new DefaultIdGenerator()
-    val ids = (1 to 100).map(_ => prettify(idGenerator.nextId()))
+    val ids         = (1 to 100).map(_ => prettify(idGenerator.nextId()))
     ids.sorted should be(ids)
     ids.sorted.reverse should be(ids.reverse)
   }
 
   it should "keep same id length" in {
     import prettifier._
-    val minId:String = prettify(0)
-    val maxId:String = prettify(max)
+    val minId: String = prettify(0)
+    val maxId: String = prettify(max)
 
     minId should have length maxId.length
   }
 
+  it should "calculate seed properly - with default settings" in {
+    val idGenerator = new DefaultIdGenerator()
+    val prettifier = new IdPrettifier()
+
+    val times = 1 to 10000
+    times.map { _ =>
+      val seed = idGenerator.nextId()
+      val id = prettifier.prettify(seed)
+      prettifier.toIdSeed(id) should be(Right(seed))
+    }
+  }
+
+  it should "calculate seed properly - without leading zeros" in {
+    val idGenerator = new DefaultIdGenerator()
+    val prettifier = new IdPrettifier(leadingZeros = false)
+
+    val times = 1 to 10000
+    times.map { _ =>
+      val seed = idGenerator.nextId()
+      val id = prettifier.prettify(seed)
+      val decodedSeed = prettifier.toIdSeed(id)
+      decodedSeed should be(Right(seed))
+    }
+
+    times.map(_ => randomLong()).map { seed =>
+      val id = prettifier.prettify(seed)
+      val decodedSeed = prettifier.toIdSeed(id)
+      decodedSeed should be(Right(seed))
+    }
+  }
+
+  it should "calculate seed properly - without leading zeros and short alphabet" in {
+    val idGenerator = new DefaultIdGenerator()
+    val prettifier = new IdPrettifier(leadingZeros = false, encoder = new AlphabetCodec(new Alphabet("ABC")), partsSize = 2)
+
+    val times = 1 to 10000
+    times.map { _ =>
+      val seed = idGenerator.nextId()
+      val id = prettifier.prettify(seed)
+      val decodedSeed = prettifier.toIdSeed(id)
+      decodedSeed should be(Right(seed))
+    }
+
+    times.map(_ => randomLong()).map { seed =>
+      val id = prettifier.prettify(seed)
+      println(id)
+      val decodedSeed = prettifier.toIdSeed(id)
+      decodedSeed should be(Right(seed))
+    }
+  }
+
+  private def randomLong(): Long = {
+    (Math.random() * Math.pow(10, 17)).toLong
+  }
 }
