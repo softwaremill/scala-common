@@ -95,12 +95,31 @@ serialize(id) // Compiles and returns "Long number: 1024"
 
 Generate unique ids. A default generator is provided, based on [Twitter Snowflake](https://github.com/twitter/snowflake),
 which generates time-based ids.
-
+Besides that library provide `IdPrettifier` and `DefaultPrettyIdGenerator` which may convert `Long` into user friendly id such `HPJD-72036-HAPK-58077`. `IdPrettifier` preserve Long's monotonicity, provides checksum and produce id with constant length (if it's not configured otherwise). It also maybe configured to user custom part sizes, separator or don't use leasing zeros to provide fixed length. More information you will find in the [blogpost](https://blog.softwaremill.com/new-pretty-id-generator-in-scala-commons-39b0fc6b6210) about it.
 SBT depedency:
 
 ````scala
 libraryDependencies += "com.softwaremill.common" %% "id-generator" % "1.1.0"
 ````
+
+
+Examples
+```scala
+//create instance of it
+val generator:StringIdGenerator = new DefaultPrettyIdGenerator(new DefaultIdGenerator())
+
+//generate ids
+val stringId = generator.nextId()
+stringId shouldNot be(empty)
+stringId should fullyMatch regex """[A-Z]{4}-[0-9]{5}-[A-Z]{4}-[0-9]{5}"""
+
+//or it might be used just for encoding existing ids
+val prettifier = new IdPrettifier()
+val id = prettifier.prettify(100L) //id = AAAA-00000-AAAA-01007
+
+//get seed
+val origin = prettifier.toIdSeed(id) // 100L
+```   
 
 ## Future Try extensions
 
