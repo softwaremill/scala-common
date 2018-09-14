@@ -11,7 +11,7 @@ class IdPrettifierBenchmarkSpec extends FlatSpec with Matchers {
 
   it should "measure performance of id prettifier" in {
     val idGenerator = new DefaultIdGenerator()
-    val prettifier  = new IdPrettifier()
+    val prettifier  = IdPrettifier.default
     val times       = 1 to 10000
     val start1      = System.currentTimeMillis()
     times.foreach { _ =>
@@ -32,7 +32,7 @@ class IdPrettifierBenchmarkSpec extends FlatSpec with Matchers {
 
   it should "measure performance of calculating seed ID" in {
     val idGenerator = new DefaultIdGenerator()
-    val prettifier  = new IdPrettifier()
+    val prettifier  = IdPrettifier.default
     val times       = 1 to 10000
     val seeds = times.map { _ =>
       val seed = idGenerator.nextId()

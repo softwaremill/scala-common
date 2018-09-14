@@ -1,6 +1,6 @@
 package com.softwaremill.id.pretty
 
-import com.softwaremill.id.IdGenerator
+import com.softwaremill.id.{DefaultIdGenerator, IdGenerator}
 
 /**
   * It makes Long ids more readable and user friendly, it also adds checksum.
@@ -10,11 +10,11 @@ import com.softwaremill.id.IdGenerator
   * @param delimiter    sign between parts
   * @param leadingZeros prettifier will make id with constant length
   */
-class IdPrettifier(
-    encoder: Codec = new AlphabetCodec(Alphabet.Base23),
-    partsSize: Int = 5,
-    delimiter: Char = '-',
-    leadingZeros: Boolean = true
+class IdPrettifier private(
+    encoder: Codec,
+    partsSize: Int,
+    delimiter: Char,
+    leadingZeros: Boolean
 ) {
 
   val zeroChar         = encoder.encode(0).charAt(0)
@@ -99,12 +99,27 @@ class IdPrettifier(
   }
 }
 
-class DefaultPrettyIdGenerator(idGenerator: IdGenerator) extends StringIdGenerator {
-
-  val idPrettifier =  new IdPrettifier()
-
-  def nextId():String = idPrettifier.prettify(idGenerator.nextId())
-
-  def idBaseAt(timestamp: Long): String =  idPrettifier.prettify(idGenerator.idBaseAt(timestamp))
+object IdPrettifier {
+  val default = new IdPrettifier(new AlphabetCodec(Alphabet.Base23), 5, '-', true)
+  def custom(
+      encoder: Codec = new AlphabetCodec(Alphabet.Base23),
+      partsSize: Int = 5,
+      delimiter: Char = '-',
+      leadingZeros: Boolean = true
+  ) = new IdPrettifier(encoder, partsSize, delimiter, leadingZeros)
 }
 
+object PrettyIdGenerator {
+  val singleNode = new PrettyIdGenerator(new DefaultIdGenerator(), IdPrettifier.default)
+  def distributed(workerId: Long, datacenterId: Long) =
+    new PrettyIdGenerator(new DefaultIdGenerator(workerId, datacenterId), IdPrettifier.default)
+}
+
+class PrettyIdGenerator(idGenerator: IdGenerator, idPrettifier: IdPrettifier) extends StringIdGenerator {
+
+  import idPrettifier._
+
+  def nextId(): String = prettify(idGenerator.nextId())
+
+  def idBaseAt(timestamp: Long): String = prettify(idGenerator.idBaseAt(timestamp))
+}
