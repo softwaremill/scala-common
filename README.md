@@ -47,7 +47,7 @@ Original idea by [Miles Sabin](https://gist.github.com/milessabin/89c9b47a910179
 Similar implementations are also available in [Shapeless](https://github.com/milessabin/shapeless) 
 and [Scalaz](https://github.com/scalaz/scalaz).
 
-####Tagging and typeclasses
+#### Tagging and typeclasses
 Let's consider the following example:
 
 ```scala
