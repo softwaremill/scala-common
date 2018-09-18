@@ -3,6 +3,10 @@ import Keys._
 
 val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.0"
+val fastUuid = Seq(
+  "com.eatthepath" % "fast-uuid" % "0.1",
+  "com.fasterxml.uuid" % "java-uuid-generator" % "3.1.5"
+)
 
 lazy val commonSettings = Seq(
   organization := "com.softwaremill.common",
@@ -58,9 +62,9 @@ lazy val tagging = (project in file("tagging"))
 lazy val idGenerator = (project in file("idGenerator"))
   .settings(commonSettings)
   .settings(
-    version := "1.1.0",
+    version := "1.2.0",
     name := "id-generator",
-    libraryDependencies ++= Seq(scalaLogging, scalaTest))
+    libraryDependencies ++= Seq(scalaLogging, scalaTest) ++ fastUuid)
 
 lazy val futureTry = (project in file("futureTry"))
   .settings(commonSettings)
