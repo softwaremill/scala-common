@@ -62,7 +62,7 @@ lazy val tagging = (project in file("tagging"))
 lazy val idGenerator = (project in file("idGenerator"))
   .settings(commonSettings)
   .settings(
-    version := "1.1.0",
+    version := "1.2.0",
     name := "id-generator",
     libraryDependencies ++= Seq(scalaLogging, scalaTest) ++ fastUuid)
 
