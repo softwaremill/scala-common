@@ -1,15 +1,17 @@
 import sbt._
 import Keys._
 
-val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
+
+//val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 val scalaTest = "org.scalatest" %% "scalatest" % "3.0.0"
 
 lazy val commonSettings = Seq(
   organization := "com.softwaremill.common",
   version := "1.0.0",
 
-  scalaVersion := "2.11.8",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.4"),
+  scalaVersion := "2.11.12",
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.8"),
 
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
@@ -47,9 +49,9 @@ lazy val scalaCommon = (project in file("."))
   .settings(
     publishArtifact := false,
     name := "scala-common")
-  .aggregate(tagging, futureTry, benchmark)
+  .aggregate(tagging.jvm, tagging.js, futureTry, benchmark)
 
-lazy val tagging = (project in file("tagging"))
+lazy val tagging = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure) in file("tagging"))
   .settings(commonSettings)
   .settings(
     version := "2.2.1",
