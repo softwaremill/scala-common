@@ -3,8 +3,7 @@ import Keys._
 
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-//val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
-val scalaTest = "org.scalatest" %% "scalatest" % "3.0.0"
+val scalaTest = "org.scalatest" %% "scalatest" % "3.0.7"
 
 lazy val commonSettings = Seq(
   organization := "com.softwaremill.common",
