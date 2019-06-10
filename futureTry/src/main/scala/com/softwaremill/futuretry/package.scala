@@ -12,7 +12,7 @@ package object futuretry {
       * @return the same future with its result wrapped up in `Try`.
       */
     def tried(implicit executor: ExecutionContext): Future[Try[T]] = {
-      baseFuture.map(Success.apply).recover(PartialFunction(Failure.apply)).mapTo[Try[T]]
+      baseFuture.map(Success.apply).recover { case f => Failure(f) }.mapTo[Try[T]]
     }
 
     /**
