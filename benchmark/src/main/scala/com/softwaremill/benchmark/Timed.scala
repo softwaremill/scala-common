@@ -59,13 +59,13 @@ object Timed {
 
     val results: Map[String, (Double, Double)] = successfulRawResults
       .groupBy(_._1)
-      .mapValues(_.map(_._2))
-      .mapValues { times =>
+      .map { case (name, nameWithTimes) =>
+        val times = nameWithTimes.map(_._2)
         val count  = times.size
         val mean   = times.sum.toDouble / count
         val dev    = times.map(t => (t - mean) * (t - mean))
         val stddev = Math.sqrt(dev.sum / count)
-        (mean, stddev)
+        name -> (mean, stddev)
       }
 
     println("---")

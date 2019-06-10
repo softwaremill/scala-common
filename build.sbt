@@ -3,14 +3,14 @@ import Keys._
 
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-val scalaTest = "org.scalatest" %% "scalatest" % "3.0.7"
+val scalaTest = "org.scalatest" %% "scalatest" % "3.1.0-SNAP13"
 
 lazy val commonSettings = Seq(
   organization := "com.softwaremill.common",
   version := "1.0.0",
 
   scalaVersion := "2.11.12",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.8"),
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.8", "2.13.0"),
 
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
