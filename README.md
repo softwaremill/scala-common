@@ -74,7 +74,7 @@ serialize(longNumber) // Compiles and returns "Long number: 30"
 // Our marker trait to be used as a tag
 trait UserId
 
-val id: Long @@ Id = 1024L.taggedWith[UserId]
+val id: Long @@ UserId = 1024L.taggedWith[UserId]
 serialize(id) // Won't compile: could not find implicit value for parameter ser
 ```
 Because tagged type `T @@ U` is considered by the compiler as a different type than `T`, it will complain about missing implicit typeclass `Serializer[_]` for `T @@ U`, even if there is instance of `Serializer[T]` already in scope.
