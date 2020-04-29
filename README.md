@@ -120,6 +120,37 @@ someWeirdApiMethod(myFuture.tried)
 val myBetterFuture: Future[Bar] = myFuture.transformTry(myUsefulTransformer)
 ````
 
+## Either additional operations (EitherOps)
+
+This small util methods allow to use Either for multiple values validation, to avoid for comprehension fail-fast behavior and accumulate errors.
+
+Example :
+
+```scala
+import com.softwaremill.eitherops._
+
+case class Person(firstName: String, lastName: String, age: Int)
+
+sealed trait Error
+case class NumericError(message: String) extends Error
+case class OtherError(message: String) extends Error
+
+def validateAge(intValue: Int): Either[NumericError, Int] = ??? 
+def validateFirstName(stringValue: String): Either[OtherError, String] = ???
+def validateLastName(stringValue: String): Either[OtherError, String] = ???
+
+val errors: Seq[Error] = EitherOps.collectLefts(
+  validateFirstName("john"),
+  validateLastName("doe"),
+  validateAge(40)
+)
+
+if (errors.isEmpty) ???// use for comprehension here to build a Person 
+else ??? // handle errors here
+```
+
+`EitherOpscollectRights` symmetric method is provided for convenience.
+
 ## Simple benchmarking utilities
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/benchmarks_2.11)

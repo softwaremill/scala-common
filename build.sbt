@@ -48,7 +48,7 @@ lazy val scalaCommon = (project in file("."))
   .settings(
     publishArtifact := false,
     name := "scala-common")
-  .aggregate(tagging.jvm, tagging.js, futureTry, benchmark)
+  .aggregate(tagging.jvm, tagging.js, futureTry, eitherOps, benchmark)
 
 lazy val tagging = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure) in file("tagging"))
   .settings(commonSettings)
@@ -61,6 +61,13 @@ lazy val futureTry = (project in file("futureTry"))
   .settings(
     version := "1.0.0",
     name := "futuretry",
+    libraryDependencies += scalaTest)
+
+lazy val eitherOps = (project in file("eitherOps"))
+  .settings(commonSettings)
+  .settings(
+    version := "1.0.0",
+    name := "eitherOps",
     libraryDependencies += scalaTest)
 
 lazy val benchmark = (project in file("benchmark"))
