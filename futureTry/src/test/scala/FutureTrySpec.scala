@@ -1,13 +1,14 @@
 import com.softwaremill.futuretry._
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.prop.TableDrivenPropertyChecks
-import org.scalatest.{FlatSpec, MustMatchers}
+import org.scalatest.matchers.must.Matchers
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Future, Await, Promise}
 import scala.util.{Failure, Success, Try}
 
-class FutureTrySpec extends FlatSpec with MustMatchers with TableDrivenPropertyChecks with ScalaFutures {
+class FutureTrySpec extends AnyFlatSpec with Matchers with TableDrivenPropertyChecks with ScalaFutures {
 
   import scala.concurrent.ExecutionContext.Implicits.global
 
