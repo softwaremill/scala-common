@@ -64,7 +64,7 @@ class FutureSquashSpec extends AsyncFlatSpec with Matchers {
 
   "FutureSquash" should "convert Future[None] to Future[A]" in {
     FutureSquash.fromOption(None).failed map {
-      _ shouldBe a[EmptyValueError]
+      _ shouldBe a[NoSuchElementException]
     }
   }
 
@@ -88,7 +88,7 @@ class FutureSquashSpec extends AsyncFlatSpec with Matchers {
     } yield ab
 
     composedABWithNone.failed map {
-      _ shouldBe a[EmptyValueError]
+      _ shouldBe a[NoSuchElementException]
     }
 
   }
@@ -117,7 +117,7 @@ class FutureSquashSpec extends AsyncFlatSpec with Matchers {
     } yield ab
 
     composedABWithFailure.failed map {
-      _ shouldBe a[Exception]
+      _ shouldBe exception
     }
   }
 

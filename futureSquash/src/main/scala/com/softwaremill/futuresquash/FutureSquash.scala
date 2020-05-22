@@ -6,12 +6,8 @@ import scala.util._
 object FutureSquash {
 
   /**
-    * Converts an Either[Throwable, A] to a Future[A] that may raise a Throwable
-    *
-    * @param either
-    * @tparam A
-    * @return a Future[A]
-    */
+   * Converts an Either[Throwable, A] to a Future[A] that may raise a Throwable
+   */
   def fromEither[A](either: Either[Throwable, A]): Future[A] = {
     either match {
       case Right(a) => Future.successful(a)
@@ -28,15 +24,12 @@ object FutureSquash {
   }
 
   /**
-    * Converts an Option[A] to a Future[A] that may raise an empty value error
-    *
-    * @param option
-    * @tparam A
-    * @return a Future[A]
-    */
+   * Converts an Option[A] to a Future[A] that may raise a NoSuchElementException
+   *
+   */
   def fromOption[A](option: Option[A]): Future[A] = option match {
     case Some(a) => Future.successful(a)
-    case None => Future.failed(new EmptyValueError)
+    case None => Future.failed(new NoSuchElementException)
   }
 
   implicit class FutureOption[A](futureOptionStack: Future[Option[A]]) {

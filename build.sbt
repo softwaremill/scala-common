@@ -63,7 +63,7 @@ lazy val futureTry = (project in file("futureTry"))
     name := "futuretry",
     libraryDependencies += scalaTest)
 
-lazy val futureSquash= (project in file("futureSquash"))
+lazy val futureSquash = (project in file("futureSquash"))
   .settings(commonSettings)
   .settings(
     version := "1.0.0",
