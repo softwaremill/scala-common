@@ -3,14 +3,14 @@ import Keys._
 
 import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
-val scalaTest = "org.scalatest" %% "scalatest" % "3.1.0-SNAP13"
+val scalaTest = "org.scalatest" %% "scalatest" % "3.1.2"
 
 lazy val commonSettings = Seq(
   organization := "com.softwaremill.common",
   version := "1.0.0",
 
   scalaVersion := "2.11.12",
-  crossScalaVersions := Seq(scalaVersion.value, "2.12.8", "2.13.0"),
+  crossScalaVersions := Seq(scalaVersion.value, "2.12.11", "2.13.2"),
 
   scalacOptions ++= Seq("-unchecked", "-deprecation"),
 
@@ -48,7 +48,7 @@ lazy val scalaCommon = (project in file("."))
   .settings(
     publishArtifact := false,
     name := "scala-common")
-  .aggregate(tagging.jvm, tagging.js, futureTry, eitherOps, benchmark)
+  .aggregate(tagging.jvm, tagging.js, futureTry, futureSquash, eitherOps, benchmark)
 
 lazy val tagging = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure) in file("tagging"))
   .settings(commonSettings)
@@ -63,6 +63,13 @@ lazy val futureTry = (project in file("futureTry"))
     name := "futuretry",
     libraryDependencies += scalaTest)
 
+lazy val futureSquash = (project in file("futureSquash"))
+  .settings(commonSettings)
+  .settings(
+    version := "1.0.0",
+    name := "futureSquash",
+    libraryDependencies += scalaTest)
+    
 lazy val eitherOps = (project in file("eitherOps"))
   .settings(commonSettings)
   .settings(
