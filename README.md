@@ -121,6 +121,7 @@ val myBetterFuture: Future[Bar] = myFuture.transformTry(myUsefulTransformer)
 ````
 
 ## Future Squash
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuresquash_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuresquash_2.11)
 
 ### Goal
 
@@ -207,6 +208,7 @@ Same operations can be used with options : `FutureSquash.fromOption` and `squash
 For empty options, an `EmptyValueError` will be raised.
 
 ## Either additional operations (EitherOps)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/eitherops_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/eitherops_2.11)
 
 This small util methods allow to use Either for multiple values validation, to avoid for comprehension fail-fast behavior and accumulate errors.
 
