@@ -48,7 +48,7 @@ lazy val scalaCommon = (project in file("."))
 
 lazy val tagging = (crossProject(JSPlatform, JVMPlatform).crossType(CrossType.Pure) in file("tagging"))
   .settings(commonSettings)
-  .settings(version := "2.2.1", name := "tagging")
+  .settings(version := "2.3.0", name := "tagging")
 
 lazy val futureTry = (project in file("futureTry"))
   .settings(commonSettings)
