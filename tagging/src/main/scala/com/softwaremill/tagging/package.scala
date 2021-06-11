@@ -1,9 +1,6 @@
 package com.softwaremill
 
-import scala.language.higherKinds
-
-/**
-  * Tag instances with arbitrary types. The tags are usually empty `trait`s. Tags have no runtime overhead and are only
+/** Tag instances with arbitrary types. The tags are usually empty `trait`s. Tags have no runtime overhead and are only
   * used at compile-time for additional type safety.
   *
   * For example:

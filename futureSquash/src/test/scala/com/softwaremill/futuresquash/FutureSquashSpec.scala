@@ -1,7 +1,10 @@
-import org.scalatest._
-import scala.concurrent.{ExecutionContext, _}
+package com.softwaremill.futuresquash
+
+import org.scalatest.flatspec.AsyncFlatSpec
+import org.scalatest.matchers.should.Matchers
+
+import scala.concurrent.{ExecutionContext, Future}
 import scala.util._
-import com.softwaremill.futuresquash._
 
 class FutureSquashSpec extends AsyncFlatSpec with Matchers {
 
@@ -20,7 +23,7 @@ class FutureSquashSpec extends AsyncFlatSpec with Matchers {
   "FutureSquash" should "convert Future[Right[Throwable, A]] to Future[A]" in {
     FutureSquash.fromEither(Right("a")) map {
       _ shouldBe "a"
-    }   
+    }
   }
 
   "FutureSquash" should "convert Future[Left[Throwable, A]] to Future[A]" in {
@@ -41,7 +44,7 @@ class FutureSquashSpec extends AsyncFlatSpec with Matchers {
 
   }
 
-   "FutureSquash" should "squash Future[Left[Throwable, A]]" in {
+  "FutureSquash" should "squash Future[Left[Throwable, A]]" in {
     val error: Either[Throwable, Int] = Left(BoomError)
     val composedABWithError: Future[String] = for {
       a <- Future.successful(error).squash

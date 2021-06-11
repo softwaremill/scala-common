@@ -1,18 +1,16 @@
 package com.softwaremill.tagging
 
-import scala.language.{higherKinds, implicitConversions}
-
 trait TypeclassTaggingCompat[Typeclass[_]] {
 
-  implicit def liftTypeclass[T, Tag](implicit tc: Typeclass[T]): Typeclass[T @@ Tag] =
-    tc.asInstanceOf[Typeclass[T @@ Tag]]
+  implicit def liftTypeclass[T, TTag](implicit tc: Typeclass[T]): Typeclass[T @@ TTag] =
+    tc.asInstanceOf[Typeclass[T @@ TTag]]
 
 }
 
 trait AnyTypeclassTaggingCompat {
 
-  implicit def liftAnyTypeclass[Typeclass[_], T, Tag](implicit tc: Typeclass[T]): Typeclass[T @@ Tag] =
-    tc.asInstanceOf[Typeclass[T @@ Tag]]
+  implicit def liftAnyTypeclass[Typeclass[_], T, TTag](implicit tc: Typeclass[T]): Typeclass[T @@ TTag] =
+    tc.asInstanceOf[Typeclass[T @@ TTag]]
 
 }
 

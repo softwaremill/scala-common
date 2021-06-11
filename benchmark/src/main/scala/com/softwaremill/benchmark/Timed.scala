@@ -6,7 +6,7 @@ object Timed {
 
   def timed[T](b: => T): (T, Long) = {
     val start = System.currentTimeMillis()
-    val r     = b
+    val r = b
     (r, System.currentTimeMillis() - start)
   }
 
@@ -24,13 +24,12 @@ object Timed {
       tests: List[(String, () => String)],
       repetitions: Int
   ): Unit = {
-    val testInstances = tests.map {
-      case (nameStr, block) =>
-        new PerfTest {
-          override def name: String = nameStr
+    val testInstances = tests.map { case (nameStr, block) =>
+      new PerfTest {
+        override def name: String = nameStr
 
-          override def run(): Try[String] = Success(block())
-        }
+        override def run(): Try[String] = Success(block())
+      }
     }
     runTests(testInstances, repetitions)
   }
@@ -61,18 +60,17 @@ object Timed {
       .groupBy(_._1)
       .map { case (name, nameWithTimes) =>
         val times = nameWithTimes.map(_._2)
-        val count  = times.size
-        val mean   = times.sum.toDouble / count
-        val dev    = times.map(t => (t - mean) * (t - mean))
+        val count = times.size
+        val mean = times.sum.toDouble / count
+        val dev = times.map(t => (t - mean) * (t - mean))
         val stddev = Math.sqrt(dev.sum / count)
-        name -> (mean, stddev)
+        (name, (mean, stddev))
       }
 
     println("---")
     println("Averages (name,  mean, stddev)")
-    results.toList.sortBy(_._2._1).foreach {
-      case (name, (mean, stddev)) =>
-        println(f"$name%-25s ${mean / 1000.0d}%4.2fs $stddev%4.2fms")
+    results.toList.sortBy(_._2._1).foreach { case (name, (mean, stddev)) =>
+      println(f"$name%-25s ${mean / 1000.0d}%4.2fs $stddev%4.2fms")
     }
   }
 

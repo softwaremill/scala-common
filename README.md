@@ -3,11 +3,11 @@
 [![Build Status](https://travis-ci.org/softwaremill/scala-common.svg)](https://travis-ci.org/softwaremill/scala-common)
 [![Join the chat at https://gitter.im/softwaremill/scala-common](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/softwaremill/scala-common?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Tiny independent libraries with a single purpose, often a single class.
+Tiny independent libraries with a single purpose, often a single class. Available for Scala 2.12, 2.13, 3; JVM and JS.
 
 ## Tagging
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/tagging_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/tagging_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/tagging_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/tagging_2.13)
 
 Tag instances with arbitrary types. Useful if you'd like to differentiate between instances on the type level without
 runtime overhead. Tags are only used at compile-time to provide additional type safety.
@@ -23,7 +23,7 @@ To add tags to existing instances, you can use the `taggedWith[_]` method, which
 SBT dependency:
 
 ````scala
-libraryDependencies += "com.softwaremill.common" %% "tagging" % "2.2.1"
+libraryDependencies += "com.softwaremill.common" %% "tagging" % "2.3.0"
 ````
 
 Example:
@@ -90,7 +90,7 @@ serialize(id) // Compiles and returns "Long number: 1024"
 
 ## Future Try extensions
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.13)
 
 Provides two utility methods for extending `Future`:
 
@@ -121,7 +121,7 @@ val myBetterFuture: Future[Bar] = myFuture.transformTry(myUsefulTransformer)
 ````
 
 ## Future Squash
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuresquash_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuresquash_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuresquash_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuresquash_2.13)
 
 ### Goal
 
@@ -208,7 +208,7 @@ Same operations can be used with options : `FutureSquash.fromOption` and `squash
 For empty options, an `EmptyValueError` will be raised.
 
 ## Either additional operations (EitherOps)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/eitherops_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/eitherops_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/eitherops_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/eitherops_2.13)
 
 This small util methods allow to use Either for multiple values validation, to avoid for comprehension fail-fast behavior and accumulate errors.
 
@@ -240,7 +240,7 @@ else ??? // handle errors here
 `EitherOpscollectRights` symmetric method is provided for convenience.
 ## Simple benchmarking utilities
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.11/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/benchmarks_2.11)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/futuretry_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.softwaremill.common/benchmarks_2.13)
 
 Provides utilities for benchmarking.
 
