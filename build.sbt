@@ -13,13 +13,12 @@ val scala2And3Versions = scala2Versions ++ List(scala3)
 
 val scalaTest = "org.scalatest" %% "scalatest" % "3.2.9"
 
-lazy val commonSettings = Seq(
+lazy val commonSettings = commonSmlBuildSettings ++ ossPublishSettings ++ Seq(
   organization := "com.softwaremill.common",
   parallelExecution := false,
   // Sonatype OSS deployment
   credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
-  Test / publishArtifact := false,
-  scalacOptions -= "-Xfatal-warnings"
+  Test / publishArtifact := false
 )
 
 val publishTagging = taskKey[Unit]("Publish the tagging projects; run sonatypeBundleRelease later")
