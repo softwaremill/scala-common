@@ -1,5 +1,5 @@
 val sbtSoftwareMillVersion = "2.0.5"
-addSbtPlugin("com.softwaremill.sbt-softwaremill" % "sbt-softwaremill-common"  % sbtSoftwareMillVersion)
+addSbtPlugin("com.softwaremill.sbt-softwaremill" % "sbt-softwaremill-common" % sbtSoftwareMillVersion)
 addSbtPlugin("com.softwaremill.sbt-softwaremill" % "sbt-softwaremill-publish" % sbtSoftwareMillVersion)
 
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.6.0")

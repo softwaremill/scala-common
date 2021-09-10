@@ -1,7 +1,7 @@
 package com.softwaremill
 
-/** Tag instances with arbitrary types. The tags are usually empty `trait`s. Tags have no runtime overhead and are only
-  * used at compile-time for additional type safety.
+/** Tag instances with arbitrary types. The tags are usually empty `trait`s. Tags have no runtime overhead and are only used at compile-time
+  * for additional type safety.
   *
   * For example:
   *
