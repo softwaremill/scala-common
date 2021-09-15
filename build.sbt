@@ -4,7 +4,7 @@ import com.jsuereth.sbtpgp.PgpKeys.publishSigned
 import sbt.Reference.display
 
 val scala2_11 = "2.11.12"
-val scala2_12 = "2.12.14"
+val scala2_12 = "2.12.15"
 val scala2_13 = "2.13.6"
 val scala3 = "3.0.0"
 
