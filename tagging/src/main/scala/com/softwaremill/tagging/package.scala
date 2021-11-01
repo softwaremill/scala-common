@@ -56,4 +56,15 @@ package object tagging {
     @inline def replaceTagF2[V]: F1[F2[T @@ V]] = ft.asInstanceOf[F1[F2[T @@ V]]]
     @inline def andTaggedWithF2[V]: F1[F2[T @@ (U with V)]] = ft.asInstanceOf[F1[F2[T @@ (U with V)]]]
   }
+
+  implicit class TaggingMapKey[M[_, _], K, V](val mkv: M[K, V]) extends AnyVal {
+    @inline def taggedKeyWith[T]: M[K @@ T, V] = mkv.asInstanceOf[M[K @@ T, V]]
+  }
+
+  implicit class AndTaggingMapKey[M[_,_], K, A, V](val mkv: M[K @@ A, V]) extends AnyVal {
+    @inline def eraseKeyTag: M[K, V] = mkv.asInstanceOf[M[K, V]]
+
+    @inline def andTaggedKeyWith[B]: M[K @@ (A with B), V] = mkv.asInstanceOf[M[K @@ (A with B), V]]
+    @inline def replaceKeyTag[B]: M[K @@ B, V] = mkv.asInstanceOf[M[K @@ B, V]]
+  }
 }
