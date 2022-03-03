@@ -18,7 +18,8 @@ lazy val commonSettings = commonSmlBuildSettings ++ ossPublishSettings ++ Seq(
   parallelExecution := false,
   // Sonatype OSS deployment
   credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
-  Test / publishArtifact := false
+  Test / publishArtifact := false,
+  mimaPreviousArtifacts := Set.empty // we only use MiMa for `core` for now, using enableMimaSettings
 )
 
 val publishTagging = taskKey[Unit]("Publish the tagging projects; run sonatypeBundleRelease later")
