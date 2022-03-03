@@ -11,10 +11,6 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       JAVA_OPTS: "-Xmx3500M -Dsbt.task.timings=true"
-    strategy:
-      fail-fast: false
-      matrix:
-        target-platform: [ "JVM", "JS"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -29,10 +25,10 @@ jobs:
             ~/.sbt
             ~/.ivy2/cache
             ~/.coursier
-          key: sbt-cache-${{ runner.os }}-${{ matrix.target-platform }}-${{ hashFiles('project/build.properties') }}
+          key: sbt-cache-${{ runner.os }}-${{ hashFiles('project/build.properties') }}
       - name: Compile
         run:
-          sbt -v compile compileDocs
+          sbt -v compile
       - name: Test
         run:
           sbt -v test
