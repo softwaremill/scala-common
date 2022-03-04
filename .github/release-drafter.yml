@@ -1,8 +1,0 @@
-categories:
-  - title: 'Dependency updates'
-    labels:
-      - 'dependency'
-template: |
-  ## What’s Changed
-
-  $CHANGES
