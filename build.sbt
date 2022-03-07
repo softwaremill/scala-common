@@ -38,6 +38,7 @@ lazy val scalaCommon = (project in file("."))
     name := "scala-common",
     version := "1.0.0",
     scalaVersion := scala2_13,
+    mimaPreviousArtifacts := Set.empty,
     publishTagging := publishSigned.all(filterProject(p => p.contains("tagging"))).value,
     publishFutureTry := publishSigned.all(filterProject(p => p.contains("futureTry"))).value,
     publishFutureSquash := publishSigned.all(filterProject(p => p.contains("futureSquash"))).value,
@@ -51,7 +52,7 @@ lazy val tagging = (projectMatrix in file("tagging"))
   .settings(
     version := "2.3.2",
     name := "tagging",
-    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "tagging" % "2.3.2"))
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %%% "tagging" % "2.3.2"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
@@ -61,7 +62,7 @@ lazy val futureTry = (projectMatrix in file("futureTry"))
     version := "1.0.1",
     name := "futuretry",
     libraryDependencies += scalaTest,
-    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "futuretry" % "1.0.1"))
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %%% "futuretry" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
@@ -71,7 +72,7 @@ lazy val futureSquash = (projectMatrix in file("futureSquash"))
     version := "1.0.1",
     name := "futureSquash",
     libraryDependencies += scalaTest,
-    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "futuresquash" % "1.0.1"))
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %%% "futuresquash" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
@@ -81,7 +82,7 @@ lazy val eitherOps = (projectMatrix in file("eitherOps"))
     version := "1.0.1",
     name := "eitherOps",
     libraryDependencies += scalaTest,
-    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "eitherops" % "1.0.1"))
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %%% "eitherops" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
@@ -91,6 +92,6 @@ lazy val benchmark = (projectMatrix in file("benchmark"))
     version := "1.0.1",
     name := "benchmark",
     libraryDependencies += scalaTest,
-    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "benchmark" % "1.0.1"))
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %%% "benchmark" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
