@@ -18,8 +18,7 @@ lazy val commonSettings = commonSmlBuildSettings ++ ossPublishSettings ++ Seq(
   parallelExecution := false,
   // Sonatype OSS deployment
   credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
-  Test / publishArtifact := false,
-  mimaPreviousArtifacts := Set.empty // remove after merge
+  Test / publishArtifact := false
 )
 
 val publishTagging = taskKey[Unit]("Publish the tagging projects; run sonatypeBundleRelease later")
@@ -49,30 +48,49 @@ lazy val scalaCommon = (project in file("."))
 
 lazy val tagging = (projectMatrix in file("tagging"))
   .settings(commonSettings)
-  .settings(version := "2.3.2", name := "tagging")
+  .settings(
+    version := "2.3.2",
+    name := "tagging",
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "tagging" % "2.3.2"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
 lazy val futureTry = (projectMatrix in file("futureTry"))
   .settings(commonSettings)
-  .settings(version := "1.0.1", name := "futuretry", libraryDependencies += scalaTest)
+  .settings(
+    version := "1.0.1",
+    name := "futuretry",
+    libraryDependencies += scalaTest,
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "futuretry" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
 lazy val futureSquash = (projectMatrix in file("futureSquash"))
   .settings(commonSettings)
-  .settings(version := "1.0.1", name := "futureSquash", libraryDependencies += scalaTest)
+  .settings(
+    version := "1.0.1",
+    name := "futureSquash",
+    libraryDependencies += scalaTest,
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "futureSquash" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
 lazy val eitherOps = (projectMatrix in file("eitherOps"))
   .settings(commonSettings)
-  .settings(version := "1.0.1", name := "eitherOps", libraryDependencies += scalaTest)
+  .settings(
+    version := "1.0.1",
+    name := "eitherOps",
+    libraryDependencies += scalaTest,
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "eitherOps" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
 lazy val benchmark = (projectMatrix in file("benchmark"))
   .settings(commonSettings)
-  .settings(version := "1.0.1", name := "benchmark", libraryDependencies += scalaTest)
+  .settings(
+    version := "1.0.1",
+    name := "benchmark",
+    libraryDependencies += scalaTest,
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "benchmark" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
