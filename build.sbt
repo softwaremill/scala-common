@@ -71,7 +71,7 @@ lazy val futureSquash = (projectMatrix in file("futureSquash"))
     version := "1.0.1",
     name := "futureSquash",
     libraryDependencies += scalaTest,
-    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "futureSquash" % "1.0.1"))
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "futuresquash" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
@@ -81,7 +81,7 @@ lazy val eitherOps = (projectMatrix in file("eitherOps"))
     version := "1.0.1",
     name := "eitherOps",
     libraryDependencies += scalaTest,
-    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "eitherOps" % "1.0.1"))
+    mimaPreviousArtifacts := Set("com.softwaremill.common" %% "eitherops" % "1.0.1"))
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
 
