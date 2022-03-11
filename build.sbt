@@ -2,11 +2,13 @@ import sbt._
 import Keys._
 import com.jsuereth.sbtpgp.PgpKeys.publishSigned
 import sbt.Reference.display
+import com.softwaremill.SbtSoftwareMillCommon.commonSmlBuildSettings
+import com.softwaremill.Publish.ossPublishSettings
 
 val scala2_11 = "2.11.12"
-val scala2_12 = "2.12.14"
-val scala2_13 = "2.13.6"
-val scala3 = "3.0.2"
+val scala2_12 = "2.12.15"
+val scala2_13 = "2.13.8"
+val scala3 = "3.1.1"
 
 val scala2Versions = List(scala2_11, scala2_12, scala2_13)
 val scala2And3Versions = scala2Versions ++ List(scala3)
