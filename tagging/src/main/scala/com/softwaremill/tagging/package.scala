@@ -28,11 +28,22 @@ package object tagging {
   implicit class Tagger[T](val t: T) extends AnyVal {
     @inline def taggedWith[U]: T @@ U = t.asInstanceOf[T @@ U]
   }
+
   implicit class AndTagger[T, U](val t: T @@ U) extends AnyVal {
     @inline def andTaggedWith[V]: T @@ (U with V) = t.asInstanceOf[T @@ (U with V)]
 
     @inline def replaceTag[V]: T @@ V = t.asInstanceOf[T @@ V]
     @inline def eraseTag: T = t.asInstanceOf[T]
+  }
+
+  implicit class FunctionTagger[A, B](val f: A => B) extends AnyVal {
+    @inline def taggedParamWith[C]: A @@ C => B = f.asInstanceOf[A @@ C => B]
+  }
+
+  implicit class Function2Tagger[A, B, C](val f: (A, B) => C) extends AnyVal {
+    @inline def taggedParam1With[D]: (A @@ D, B) => C = f.asInstanceOf[(A @@ D, B) => C]
+    @inline def taggedParam2With[D]: (A, B @@ D) => C = f.asInstanceOf[(A, B @@ D) => C]
+    @inline def taggedParamsWith[D]: (A @@ D, B @@ D) => C = f.asInstanceOf[(A @@ D, B @@ D) => C]
   }
 
   implicit class TaggingF[F[_], T](val fa: F[T]) extends AnyVal {
