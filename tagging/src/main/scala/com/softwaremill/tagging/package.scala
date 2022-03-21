@@ -28,11 +28,41 @@ package object tagging {
   implicit class Tagger[T](val t: T) extends AnyVal {
     @inline def taggedWith[U]: T @@ U = t.asInstanceOf[T @@ U]
   }
+
   implicit class AndTagger[T, U](val t: T @@ U) extends AnyVal {
     @inline def andTaggedWith[V]: T @@ (U with V) = t.asInstanceOf[T @@ (U with V)]
 
     @inline def replaceTag[V]: T @@ V = t.asInstanceOf[T @@ V]
     @inline def eraseTag: T = t.asInstanceOf[T]
+  }
+
+  implicit class FunctionTagger[A, B](val f: A => B) extends AnyVal {
+    @inline def taggedParamWith[C]: A @@ C => B = f.asInstanceOf[A @@ C => B]
+    @inline def taggedOutputWith[C]: A => B @@ C = f.asInstanceOf[A => B @@ C]
+  }
+
+  implicit class Function2Tagger[A, B, C](val f: (A, B) => C) extends AnyVal {
+    @inline def taggedParam1With[D]: (A @@ D, B) => C = f.asInstanceOf[(A @@ D, B) => C]
+    @inline def taggedParam2With[D]: (A, B @@ D) => C = f.asInstanceOf[(A, B @@ D) => C]
+    @inline def taggedParamsWith[D]: (A @@ D, B @@ D) => C = f.asInstanceOf[(A @@ D, B @@ D) => C]
+    @inline def taggedOutputWith[D]: (A, B) => C @@ D = f.asInstanceOf[(A, B) => C @@ D]
+  }
+
+  implicit class Function3Tagger[A, B, C, D](val f: (A, B, C) => D) extends AnyVal {
+    @inline def taggedParam1With[E]: (A @@ E, B, C) => D = f.asInstanceOf[(A @@ E, B, C) => D]
+    @inline def taggedParam2With[E]: (A, B @@ E, C) => D = f.asInstanceOf[(A, B @@ E, C) => D]
+    @inline def taggedParam3With[E]: (A, B, C @@ E) => D = f.asInstanceOf[(A, B, C @@ E) => D]
+    @inline def taggedParamsWith[E]: (A @@ E, B @@ E, C @@ E) => D = f.asInstanceOf[(A @@ E, B @@ E, C @@ E) => D]
+    @inline def taggedOutputWith[E]: (A, B, C) => D @@ E = f.asInstanceOf[(A, B, C) => D @@ E]
+  }
+
+  implicit class Function4Tagger[A, B, C, D, E](val f: (A, B, C, D) => E) extends AnyVal {
+    @inline def taggedParam1With[F]: (A @@ F, B, C, D) => E = f.asInstanceOf[(A @@ F, B, C, D) => E]
+    @inline def taggedParam2With[F]: (A, B @@ F, C, D) => E = f.asInstanceOf[(A, B @@ F, C, D) => E]
+    @inline def taggedParam3With[F]: (A, B, C @@ F, D) => E = f.asInstanceOf[(A, B, C @@ F, D) => E]
+    @inline def taggedParam4With[F]: (A, B, C, D @@ F) => E = f.asInstanceOf[(A, B, C, D @@ F) => E]
+    @inline def taggedParamsWith[F]: (A @@ F, B @@ F, C @@ F, D @@ F) => E = f.asInstanceOf[(A @@ F, B @@ F, C @@ F, D @@ F) => E]
+    @inline def taggedOutputWith[F]: (A, B, C, D) => D @@ F = f.asInstanceOf[(A, B, C, D) => D @@ F]
   }
 
   implicit class TaggingF[F[_], T](val fa: F[T]) extends AnyVal {
