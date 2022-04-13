@@ -1,7 +1,7 @@
 # scala-common
 
 [![Join the chat at https://gitter.im/softwaremill/scala-common](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/softwaremill/scala-common?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![CI](https://github.com/softwaremill/scala-common/workflows/CI/badge.svg)](https://github.com/softwaremill/scala-common/actions?query=workflow%3A%22CI%22)
+[![CI](https://github.com/softwaremill/scala-common/workflows/CI/badge.svg)](https://github.com/softwaremill/scala-common/actions?query=workflow%3ACI+branch%3Amaster)
 
 Tiny independent libraries with a single purpose, often a single class. Available for Scala 2.11, 2.12, 2.13, 3; JVM and JS.
 
