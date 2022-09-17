@@ -5,4 +5,4 @@ addSbtPlugin("com.softwaremill.sbt-softwaremill" % "sbt-softwaremill-publish" % 
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.11.0")
 
 addSbtPlugin("com.eed3si9n" % "sbt-projectmatrix" % "0.9.0")
-addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "1.1.0")
+addSbtPlugin("com.typesafe" % "sbt-mima-plugin" % "1.1.1")
