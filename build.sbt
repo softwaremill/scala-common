@@ -73,6 +73,7 @@ lazy val tagging = (projectMatrix in file("tagging"))
   )
   .jvmPlatform(scalaVersions = scala2And3Versions)
   .jsPlatform(scalaVersions = scala2And3Versions)
+  .nativePlatform(scalaVersions = scala2And3Versions)
 
 lazy val futureTry = (projectMatrix in file("futureTry"))
   .settings(commonSettings ++ enableMimaSettings)
