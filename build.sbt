@@ -68,7 +68,7 @@ lazy val scalaCommon = (project in file("."))
 lazy val tagging = (projectMatrix in file("tagging"))
   .settings(commonSettings ++ enableMimaSettings)
   .settings(
-    version := "2.3.3",
+    version := "2.3.4",
     name := "tagging"
   )
   .jvmPlatform(scalaVersions = scala2And3Versions)
