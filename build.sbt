@@ -12,7 +12,7 @@ val scala3 = "3.3.3"
 val scala2Versions = List(scala2_12, scala2_13)
 val scala2And3Versions = scala2Versions ++ List(scala3)
 
-val scalaTest = "org.scalatest" %% "scalatest" % "3.2.18"
+val scalaTest = "org.scalatest" %% "scalatest" % "3.2.19"
 
 lazy val commonSettings = commonSmlBuildSettings ++ ossPublishSettings ++ Seq(
   organization := "com.softwaremill.common",
