@@ -7,7 +7,7 @@ import com.softwaremill.Publish.ossPublishSettings
 
 val scala2_12 = "2.12.19"
 val scala2_13 = "2.13.14"
-val scala3 = "3.3.3"
+val scala3 = "3.3.4"
 
 val scala2Versions = List(scala2_12, scala2_13)
 val scala2And3Versions = scala2Versions ++ List(scala3)
